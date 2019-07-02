@@ -5,13 +5,6 @@ echo
 echo "Let's create the TF variables file"
 echo
 
-
-echo "This is my access_key: >$ACCESS_KEY<"
-echo "This is my secret_key: >$SECRET_KEY<"
-
-
-exit 2
-
 cat <<EOF > tf_iaas/terraforming-pas/terraform.tfvars
 env_name           = “farb”
 access_key         = “$ACCESS_KEY”
