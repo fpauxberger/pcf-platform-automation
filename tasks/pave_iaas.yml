@@ -1,0 +1,26 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: 
+    repository: hashicorp/terraform 
+    tag: full
+
+run:
+  path: automate_allthethings/scripts/pave_iaas.sh
+  user: root
+
+params:
+  ACCESS_KEY: ((access_key_id))
+  SECRET_KEY: ((secret_access_key))
+
+
+inputs:
+- name: automate_allthethings
+- name: tf_iaas
+
+
+outputs:
+- name: terraform-output-s3
+

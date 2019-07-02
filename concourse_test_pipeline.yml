@@ -1,0 +1,33 @@
+resources:
+- name: tf_iaas
+  type: git
+  source: 
+    uri: https://github.com/pivotal-cf/terraforming-aws
+
+- name: automate_allthethings
+  type: git
+  source:
+    uri: https://github.com/fpauxberger/pcf-platform-automation
+
+- name: terraform-output-s3
+  type: s3
+  source:
+    access_key_id: ((access_key_id))
+    secret_access_key: ((secret_access_key))
+    region_name: ((region))
+    bucket: ((bucket))
+    regexp: terraform.(.*).out
+
+jobs:
+- name: pave_iaas_job
+  plan: 
+  - get: tf_iaas 
+    trigger: false
+  - get: automate_allthethings
+    trigger: false
+  - task: pave_iaas_task
+    file: automate_allthethings/tasks/pave_iaas.yml
+  - put: terraform-output-s3
+    params: 
+      file: terraform-output/terraform.*.out
+
