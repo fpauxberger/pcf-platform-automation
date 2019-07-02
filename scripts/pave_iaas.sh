@@ -1,6 +1,17 @@
 #!/bin/bash
 
-# Genereate the TF variables
+# We need to have unzip
+apt update -y
+apt install -y curl
+apt install -y unzip
+
+
+# Install terraform
+curl -o terraform_0.11.13_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+unzip terraform_0.11.13_linux_amd64.zip
+mv terraform /usr/local/bin
+
+# Generate the TF variables
 echo
 echo "Let's create the TF variables file"
 echo
