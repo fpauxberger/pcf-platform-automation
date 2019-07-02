@@ -4,7 +4,7 @@ platform: linux
 image_resource:
   type: registry-image
   source: 
-    repository: hashicorp/terraform 
+    repository: hashicorp/terraform:0.11.13
     tag: full
 
 run:
