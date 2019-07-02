@@ -4,8 +4,8 @@ platform: linux
 image_resource:
   type: registry-image
   source: 
-    repository: "hashicorp/terraform:0.11.13"
-    tag: full
+    repository: hashicorp/terraform
+    tag: 0.11.13
 
 run:
   path: automate_allthethings/scripts/pave_iaas.sh
