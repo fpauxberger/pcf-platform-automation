@@ -4,8 +4,8 @@ platform: linux
 image_resource:
   type: registry-image
   source: 
-    repository: hashicorp/terraform
-    tag: full
+    repository: ubuntu
+    tag: 18.04
 
 run:
   path: automate_allthethings/scripts/pave_iaas.sh
