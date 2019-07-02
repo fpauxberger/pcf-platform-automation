@@ -31,13 +31,13 @@ echo
 
 cd tf_iaas/terraforming-pas
 echo "**********************************"
-echo “>>>>>>>> Performing terraform init”
+echo ">>>>>>>> Performing terraform init"
 echo "**********************************"
 echo
 terraform init -input=false
 
 echo "**********************************"
-echo “>>>>>>>> Performing terraform apply”
+echo ">>>>>>>> Performing terraform apply"
 echo "**********************************"
 terraform apply -input=false -auto-approve -state=../../terraform-output/terraform.1.0.0.out
 
