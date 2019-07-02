@@ -27,6 +27,9 @@ jobs:
     trigger: false
   - task: pave_iaas_task
     file: automate_allthethings/tasks/pave_iaas.yml
+    params:
+      ACCESS_KEY: ((access_key_id))
+      SECRET_KEY: ((secret_access_key))
   - put: terraform-output-s3
     params: 
       file: terraform-output/terraform.*.out
