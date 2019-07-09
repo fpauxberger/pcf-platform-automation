@@ -26,7 +26,7 @@ rds_instance_count = 1
 dns_suffix         = "whizzosoftware.com"
 hosted_zone        = "farb.whizzosoftware.com"
 vpc_cidr           = "10.0.0.0/16"
-ops_manager_ami    = "ami-08a1a17cbd9d0fbf9"
+ops_manager_ami    = ""
 use_route53        = true
 use_tcp_routes     = true
 

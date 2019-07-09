@@ -100,6 +100,12 @@ for bucket in j["Buckets"]:
 	if bucket["Name"].startswith(envname + "-buildpacks-bucket-") or bucket["Name"].startswith(envname + "-droplets-bucket-") or bucket["Name"].startswith(envname + "-ops-manager-bucket-") or bucket["Name"].startswith(envname + "-resources-bucket-") or bucket["Name"].startswith(envname + "-packages-bucket-"):
 		subprocess.call(['aws', 's3api', 'delete-bucket', '--bucket', bucket["Name"], "--region", region])
 
+print "Deleting RDS subnet groups"
+j = json.loads(subprocess.check_output(["aws", "rds", "describe-db-subnet-groups", "--region", region]))
+for bucket in j["DBSubnetGroups"]:
+	if bucket["DBSubnetGroupName"] == (envname + "_db_subnet_group"):
+		subprocess.call(['aws', 'rds', 'delete-db-subnet-group', '--db-subnet-group-name', envname + "_db_subnet_group", "--region", region])
+
 print "Deleting hosted zones"
 j = json.loads(subprocess.check_output(["aws", "route53", "list-hosted-zones", "--region", region]))
 for zone in j["HostedZones"]:
