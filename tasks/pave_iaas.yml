@@ -22,5 +22,5 @@ inputs:
 
 
 outputs:
-- name: terraform-output-s3
+- name: terraform-output
 
