@@ -52,5 +52,7 @@ echo ">>>>>>>> Performing terraform apply"
 echo "**********************************"
 terraform apply -input=false -auto-approve -state=../../terraform-output/terraform.1.0.0.out
 
+find ../..
+
 exit 0
 
