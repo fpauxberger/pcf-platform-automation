@@ -1,11 +1,13 @@
 #!/bin/bash
 find .
-REGION_NAME=`cat terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.region.value'`
-VPCSUBNET_ID=`cat terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.management_subnet_ids.value[0]'`
-SG_ID=`cat terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_security_group_id.value'`
-KEYPAIR_NAME=`cat terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_ssh_public_key_name.value'`
-INSTANCEPROFILE_NAME=`cat terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_iam_instance_profile_name.value'`
-cat <<EOF > config/opsman.yml
+
+REGION_NAME=`cat ../../terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.region.value'`
+VPCSUBNET_ID=`cat ../../terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.management_subnet_ids.value[0]'`
+SG_ID=`cat ../../terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_security_group_id.value'`
+KEYPAIR_NAME=`cat ../../terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_ssh_public_key_name.value'`
+INSTANCEPROFILE_NAME=`cat ../../terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_iam_instance_profile_name.value'`
+
+cat <<EOF > ../../opsmanconfig-output/opsman.yml
 ---
 opsman-configuration:
   aws:

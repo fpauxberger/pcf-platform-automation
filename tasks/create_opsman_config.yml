@@ -15,5 +15,5 @@ inputs:
 - name: automate_allthethings
 
 outputs:
-- name: config
+- name: opsmanconfig-output
 
