@@ -1,4 +1,7 @@
 #!/bin/bash
+apt update -y
+apt install -y jq
+
 find .
 
 REGION_NAME=`cat ../../terraform-output/terraform.1.0.0.out | jq -r '.modules[0].outputs.region.value'`
