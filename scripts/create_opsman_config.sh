@@ -10,7 +10,7 @@ SG_ID=`cat terraform-output-s3/terraform.1.0.0.out | jq -r '.modules[0].outputs.
 KEYPAIR_NAME=`cat terraform-output-s3/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_ssh_public_key_name.value'`
 INSTANCEPROFILE_NAME=`cat terraform-output-s3/terraform.1.0.0.out | jq -r '.modules[0].outputs.ops_manager_iam_instance_profile_name.value'`
 
-cat <<EOF > ./opsmanconfig-output/opsman.yml
+cat <<EOF > ./opsmanconfig-output/opsman.1.0.0.yml
 ---
 opsman-configuration:
   aws:
