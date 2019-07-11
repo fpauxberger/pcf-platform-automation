@@ -13,4 +13,4 @@ run:
 
 inputs:
 - name: automate_allthethings
-- name: opsmanconfig-output
+- name: opsmanconfig-output-s3
