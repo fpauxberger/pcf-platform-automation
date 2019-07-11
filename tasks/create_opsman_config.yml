@@ -13,6 +13,7 @@ run:
 
 inputs:
 - name: automate_allthethings
+- name: terraform-output-s3
 
 outputs:
 - name: opsmanconfig-output
