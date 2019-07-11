@@ -1,0 +1,16 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: 
+    repository: ubuntu
+    tag: 18.04
+
+run:
+  path: automate_allthethings/scripts/deploy_opsman.sh
+  user: root
+
+inputs:
+- name: automate_allthethings
+- name: opsmanconfig-output
