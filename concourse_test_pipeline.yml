@@ -1,14 +1,21 @@
+resource_types:
+
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
 resources:
+
 - name: tf_iaas
   type: git
   source: 
     uri: https://github.com/pivotal-cf/terraforming-aws
-
 - name: automate_allthethings
   type: git
   source:
     uri: https://github.com/fpauxberger/pcf-platform-automation
-
 - name: terraform-output-s3
   type: s3
   source:
@@ -17,9 +24,44 @@ resources:
     region_name: ((region))
     bucket: ((bucket))
     regexp: terraform.(.*).out
+- name: opsmanconfig-output-s3
+  type: s3
+  source:
+    access_key_id: ((access_key_id))
+    secret_access_key: ((secret_access_key))
+    region_name: ((region))
+    bucket: ((bucket))
+    regexp: opsman.(.*).yml
+- name: config
+  type: s3
+  source:
+    access_key_id: ((access_key_id))
+    secret_access_key: ((secret_access_key))
+    region_name: ((region))
+    bucket: ((bucket))
+    regexp: opsman.(.*).yml
+- name: platform-automation-tasks
+  type: s3
+  source:
+    access_key_id: ((access_key_id))
+    secret_access_key: ((secret_access_key))
+    region_name: ((region))
+    bucket: ((bucket))
+    regexp: platform-automation-tasks-(.*).zip
+- name: platform-automation-image
+  type: s3
+  source:
+    access_key_id: ((access_key_id))
+    secret_access_key: ((secret_access_key))
+    region_name: ((region))
+    bucket: ((bucket))
+    regexp: platform-automation-image-(.*).tgz
 
 jobs:
+
 - name: pave_iaas_job
+  public: true
+  serial: true
   plan: 
   - get: tf_iaas 
     trigger: false
@@ -34,3 +76,43 @@ jobs:
     params: 
       file: terraform-output/terraform.*.out
 
+- name: create-opsman-config
+  public: true
+  serial: true
+  plan:
+    - get: automate_allthethings
+      trigger: false
+    - get: terraform-output-s3
+      trigger: false
+    - task: create-opsman-config
+      file: automate_allthethings/tasks/create_opsman_config.yml
+    - put: opsmanconfig-output-s3
+      params: 
+        file: opsmanconfig-output/opsman.*.yml
+
+- name: install-opsman
+  public: true
+  serial: true
+  plan:
+    - get: automate_allthethings
+      passed: [create-opsman-config]
+      trigger: true
+    - get: platform-automation-image
+      trigger: false
+      params:
+        globs: ["*image*.tgz"]
+        unpack: true    
+    - get: platform-automation-tasks
+      trigger: false
+      params:
+        globs: ["*tasks*.zip"]
+        unpack: true    
+    - get: opsmanconfig-output-s3
+      trigger: false
+    - get: config
+      trigger: false
+    - task: download-product
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/download-product.yml      
+      params:
+        CONFIG_FILE: foundation/download-ops-manager.yml
