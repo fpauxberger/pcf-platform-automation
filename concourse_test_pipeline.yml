@@ -1,3 +1,21 @@
+templating:
+
+- &interpolate-creds
+  image: platform-automation-image
+  file: platform-automation-tasks/tasks/credhub-interpolate.yml
+  params:
+    CREDHUB_CLIENT: ((credhub-client))
+    CREDHUB_SECRET: ((credhub-secret))
+    CREDHUB_SERVER: ((credhub-server))
+    PREFIX: '/private-foundation'
+    INTERPOLATION_PATHS: ((foundation))/config ((foundation))/env
+    SKIP_MISSING: true
+  input_mapping:
+    files: configuration
+  output_mapping:
+    interpolated-files: interpolated-creds
+
+
 resource_types:
 
 - name: pivnet
@@ -57,6 +75,21 @@ resources:
     bucket: ((bucket))
     regexp: platform-automation-image-(.*).tgz
 
+# configurations
+- name: configuration
+  type: git
+  source:
+    private_key: ((configuration.private_key))
+    uri: ((configuration.uri))
+    branch: master
+
+- name: variable
+  type: git
+  source:
+    private_key: ((variable.private_key))
+    uri: ((variable.uri))
+    branch: master
+
 jobs:
 
 - name: pave_iaas_job
@@ -111,8 +144,74 @@ jobs:
       trigger: false
     - get: config
       trigger: false
-    - task: download-product
+    - get: configuration
+      trigger: false
+    - task: interpolate-download-opsman-image-creds
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/credhub-interpolate.yml
+      params:
+        CREDHUB_CLIENT: ((credhub-client))
+        CREDHUB_SECRET: ((credhub-secret))
+        CREDHUB_SERVER: ((credhub-server))
+        PREFIX: '/private-foundation'
+        INTERPOLATION_PATHS: "download-product-configs"
+        SKIP_MISSING: true
+      input_mapping:
+        files: configuration
+      output_mapping:
+        interpolated-files: product-configs
+    - task: download-opsman-image
       image: platform-automation-image
       file: platform-automation-tasks/tasks/download-product-s3.yml
       params:
-        CONFIG_FILE: foundation/download_ops_manager.yml
+        CONFIG_FILE: download-product-configs/opsman.yml
+        input_mapping:
+          config: product-configs
+        output_mapping:
+          downloaded-product: opsman-image
+    - get: variable
+    - task: interpolate-creds
+      <<: *interpolate-creds
+    - task: create-vm
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/create-vm.yml
+      input_mapping:
+        image: opsman-image
+        state: configuration
+        config: interpolated-creds
+        vars: variable
+      params:
+        VARS_FILES: vars/((foundation))/vars/opsman-vars.yml
+        STATE_FILE: ((foundation))/state/state.yml
+        OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
+      ensure: &make-state-commit
+        do:
+          - task: make-commit
+            image: platform-automation-image
+            file: platform-automation-tasks/tasks/make-git-commit.yml
+            input_mapping:
+              repository: configuration
+              file-source: generated-state
+            output_mapping:
+              repository-commit: configuration-commit
+            params:
+              FILE_SOURCE_PATH: state.yml
+              FILE_DESTINATION_PATH: ((foundation))/state/state.yml
+              GIT_AUTHOR_EMAIL: ((git-email))
+              GIT_AUTHOR_NAME: "Platform Automation Bot"
+              COMMIT_MESSAGE: 'Update state file'
+          - put: configuration
+            params:
+              repository: configuration-commit
+              merge: true
+    - task: configure-authentication
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-authentication.yml
+      attempts: 10
+      input_mapping:
+        env: configuration
+        config: interpolated-creds
+      params:
+        ENV_FILE: ((foundation))/env/env.yml
+        AUTH_CONFIG_FILE: ((foundation))/config/auth.yml
+
