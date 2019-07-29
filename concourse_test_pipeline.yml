@@ -114,3 +114,5 @@ jobs:
     - task: download-product
       image: platform-automation-image
       file: platform-automation-tasks/tasks/download-product-s3.yml
+      params:
+        CONFIG_FILE: config/foundation/download_ops_manager.yml
