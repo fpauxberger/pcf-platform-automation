@@ -15,7 +15,7 @@ resources:
 - name: automate_allthethings
   type: git
   source:
-    uri: https://github.com/fpauxberger/pcf-platform-automation
+    uri: https://github.com/fpauxberger/pcf-platform-automation.git
 - name: terraform-output-s3
   type: s3
   source:
