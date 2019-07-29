@@ -153,6 +153,26 @@ jobs:
         CREDHUB_CLIENT: ((credhub-client))
         CREDHUB_SECRET: ((credhub-secret))
         CREDHUB_SERVER: ((credhub-server))
+        CREDHUB_CA_CERT: |
+          -----BEGIN CERTIFICATE-----
+          MIIDJjCCAg6gAwIBAgIRAKcRzVYtbO3ZNG39/Dt5bc8wDQYJKoZIhvcNAQELBQAw
+          PDEMMAoGA1UEBhMDVVNBMRYwFAYDVQQKEw1DbG91ZCBGb3VuZHJ5MRQwEgYDVQQD
+          EwtDb25jb3Vyc2VDQTAeFw0xOTA3MDIwOTI2MzlaFw0yMDA3MDEwOTI2MzlaMDwx
+          DDAKBgNVBAYTA1VTQTEWMBQGA1UEChMNQ2xvdWQgRm91bmRyeTEUMBIGA1UEAxML
+          Q29uY291cnNlQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDZsK/9
+          Z7SH/VRiPSQcWaEcsBF3tb9djgzeTbyWmuUtCCyqt8PTjTdPkq9/W+KcJSZVUrO/
+          in8Dd5U5cjv6KswQYupTTD69xr8xz47rv64CV2x7MypYmEbHDTQ9rgM5l7kpf2y8
+          PgxqWj47A4qe7+PwdjUedCbptm/t50wGpO3HPNYAP0X6GpLGMJmzqmgvLPCWcWLn
+          JLNE6KID3keq7hzoi4mLpi2wNtpUXCin9/UPoMDGQEM1JEWZWpTSKr+Y5Mm42Sxl
+          AoGROvbFigLNlSV26/T1mWmel4n7lo54BQvFvRX+D/1yV1vgccI5QLBGgGmFhbbI
+          9P0uA/oesO2iMfh/AgMBAAGjIzAhMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8E
+          BTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQDFnomJMAuvMWgsFhTZpQpNspyxFlil
+          WyMqSasR/3T4bG7RWrN+Qgt8R/Zy063wGN954dD3mp3QhPyGgHxDdvQpTBhktNXt
+          uIRtrklSyDthOb36ze1tSoSmJrFjws2pNsAxOzgdH8kxT8JtTiiM5p0keJiYbYf2
+          AIlAoK6bxxQKjOjlKoI+MtaA9+9VzXLfB82M1ZjmWXVxs2g+NbpKjawKKYgR8iJm
+          Ql0eWjDwyc/RfTVVk7r7dxK+4L3CRdP6rBEg4wBrB4xiriKJ3wxjNtNd4nB110s2
+          lI+u789/d6BkTO83yt23mfri8TrxxCpfxcfHdfahZfN4zeg2ZLy3pYN2
+          -----END CERTIFICATE----- 
         PREFIX: '/private-foundation'
         INTERPOLATION_PATHS: "download-product-configs"
         SKIP_MISSING: true
