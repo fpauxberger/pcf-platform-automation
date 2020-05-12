@@ -47,3 +47,7 @@ s3-secret-access-key: ((secret_access_key))
 ## defaults to accesskey;
 ## allows use of AWS instance IAM creds, if available
 # s3-auth-type: iam
+
+#
+#changed, paux
+#
